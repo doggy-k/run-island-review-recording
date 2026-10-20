@@ -38,7 +38,6 @@ appId: com.runisland.app
     text: "Email"
     optional: true
 - inputText: "sam.reviewer@example.com"
-- hideKeyboard
 - waitForAnimationToEnd
 - swipe:
     start: 50%, 15%
@@ -65,6 +64,9 @@ appId: com.runisland.app
 - waitForAnimationToEnd:
     timeout: 4000
 - scroll
+- scrollUntilVisible:
+    element: "Cards"
+    direction: UP
 - tapOn: "Cards"
 - waitForAnimationToEnd
 # Runs
