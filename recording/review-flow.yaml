@@ -53,21 +53,24 @@ appId: com.runisland.app
 - tapOn: "Events"
 - waitForAnimationToEnd
 - scroll
-- tapOn: "Calendar"
+- tapOn: "(?i)Calendar"
 - waitForAnimationToEnd:
     timeout: 4000
 - tapOn:
     text: "Next month"
     optional: true
 - waitForAnimationToEnd
-- tapOn: "By month"
+- tapOn: "(?i)By month"
 - waitForAnimationToEnd:
     timeout: 4000
 - scroll
 - scrollUntilVisible:
-    element: "Cards"
+    element: "(?i)cards"
     direction: UP
-- tapOn: "Cards"
+    optional: true
+- tapOn:
+    text: "(?i)cards"
+    optional: true
 - waitForAnimationToEnd
 # Runs
 - tapOn: "Runs"
