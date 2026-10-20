@@ -49,6 +49,10 @@ appId: com.runisland.app
     end: 85%, 50%
     duration: 400
 - waitForAnimationToEnd
+- tapOn:
+    text: "Back"
+    optional: true
+- waitForAnimationToEnd
 # Events: Cards, Calendar, By month
 - tapOn: "Events"
 - waitForAnimationToEnd
@@ -88,6 +92,10 @@ appId: com.runisland.app
     end: 85%, 50%
     duration: 400
 - waitForAnimationToEnd
+- tapOn:
+    text: "Back"
+    optional: true
+- waitForAnimationToEnd
 # Shop: a product and the website checkout in the in-app browser (nothing bought)
 - tapOn: "Shop"
 - waitForAnimationToEnd:
@@ -109,6 +117,10 @@ appId: com.runisland.app
     end: 85%, 50%
     duration: 400
 - waitForAnimationToEnd
+- tapOn:
+    text: "Back"
+    optional: true
+- waitForAnimationToEnd
 # Club and legal
 - tapOn: "Club"
 - waitForAnimationToEnd:
@@ -124,6 +136,10 @@ appId: com.runisland.app
     start: 1%, 50%
     end: 85%, 50%
     duration: 400
+- waitForAnimationToEnd
+- tapOn:
+    text: "Back"
+    optional: true
 - waitForAnimationToEnd
 - scrollUntilVisible:
     element: "Privacy policy"
