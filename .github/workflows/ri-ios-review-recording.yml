@@ -1,0 +1,66 @@
+# Records the Run Island iPhone app (iOS Simulator) walking through Apple's App Review shot list.
+# Triggered by pushing recording/** or manually. The video and Maestro
+# logs are uploaded as the "review-recording" artifact.
+name: ri-ios-review-recording
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "recording/**"
+jobs:
+  record:
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: recording
+      - name: Download the simulator build
+        run: |
+          URL=$(cat recording/app-url.txt)
+          curl -fsSL "$URL" -o app.tar.gz
+          mkdir app && tar xzf app.tar.gz -C app
+          find app -maxdepth 3 -name "*.app" -type d | head -1 > app-path.txt
+          cat app-path.txt
+      - name: Boot an iPhone simulator
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c 'import json,re,sys; d=json.load(sys.stdin)["devices"]; v=lambda k: [int(x) for x in re.findall(r"\d+", k.split("iOS-")[-1])]; r=max([k for k in d if "iOS" in k and any("iPhone" in x["name"] for x in d[k])], key=v); ph=[x for x in d[r] if "iPhone" in x["name"]]; pro=[x for x in ph if "Pro" in x["name"] and "Max" not in x["name"]]; print((pro or ph)[-1]["udid"]); print(r, (pro or ph)[-1]["name"], file=sys.stderr)')
+          echo "UDID=$UDID" >> $GITHUB_ENV
+          xcrun simctl boot "$UDID"
+          xcrun simctl list runtimes | tee runtimes.txt
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --cellularBars 4 --wifiBars 3
+          xcrun simctl install "$UDID" "$(cat app-path.txt)"
+      - name: Install Maestro
+        run: |
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+      - name: Record the walkthrough
+        run: |
+          xcrun simctl io "$UDID" recordVideo --codec=h264 --force review-recording.mp4 &
+          REC=$!
+          sleep 3
+          set +e
+          maestro --device "$UDID" test recording/review-flow.yaml --debug-output maestro-debug
+          STATUS=$?
+          set -e
+          sleep 2
+          kill -INT $REC
+          wait $REC || true
+          xcrun simctl io "$UDID" screenshot final-screen.png || true
+          ls -la review-recording.mp4
+          # Shrink for App Review (the raw capture is ~700 MB).
+          brew install --quiet ffmpeg >/dev/null 2>&1 || true
+          ffmpeg -v error -y -i review-recording.mp4 -vf "scale=-2:1600,fps=30" -c:v libx264 -crf 26 -preset veryfast -pix_fmt yuv420p -movflags +faststart review-recording-small.mp4 || true
+          ls -la review-recording-small.mp4 || true
+          exit $STATUS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ri-review-recording
+          path: |
+            review-recording-small.mp4
+            final-screen.png
+            runtimes.txt
+            maestro-debug
+          retention-days: 14

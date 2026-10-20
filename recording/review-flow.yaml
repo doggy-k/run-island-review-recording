@@ -1,0 +1,135 @@
+# Maestro walkthrough for Apple App Review (Guideline 2.1 information request), shot list from ChatGPT
+# (docs/ai-handoffs/chatgpt-app-review-recording.md): launch, Home, an event and the RSVP form (filled,
+# never sent), Events views, Runs, Shop with the website checkout in the in-app browser, Club and legal.
+# Nothing leaves the app (no Maps, no Calendar) and nothing is submitted.
+appId: com.runisland.app
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Next run:.*"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 5000
+- scroll
+- waitForAnimationToEnd
+- scrollUntilVisible:
+    element: "Next run:.*"
+    direction: UP
+    optional: true
+# Event detail and RSVP form (not sent)
+- tapOn: "Next run:.*"
+- extendedWaitUntil:
+    visible: "Add to calendar"
+    timeout: 20000
+- waitForAnimationToEnd
+- scrollUntilVisible:
+    element: "(RSVP, it is free|Join the waitlist|RSVP)"
+    direction: DOWN
+    optional: true
+- tapOn:
+    text: "RSVP, it is free"
+    optional: true
+- tapOn:
+    text: "Your name"
+    optional: true
+- inputText: "Sam Reviewer"
+- tapOn:
+    text: "Email"
+    optional: true
+- inputText: "sam.reviewer@example.com"
+- hideKeyboard
+- waitForAnimationToEnd
+- swipe:
+    start: 50%, 15%
+    end: 50%, 90%
+    duration: 400
+- waitForAnimationToEnd
+- swipe:
+    start: 1%, 50%
+    end: 85%, 50%
+    duration: 400
+- waitForAnimationToEnd
+# Events: Cards, Calendar, By month
+- tapOn: "Events"
+- waitForAnimationToEnd
+- scroll
+- tapOn: "Calendar"
+- waitForAnimationToEnd:
+    timeout: 4000
+- tapOn:
+    text: "Next month"
+    optional: true
+- waitForAnimationToEnd
+- tapOn: "By month"
+- waitForAnimationToEnd:
+    timeout: 4000
+- scroll
+- tapOn: "Cards"
+- waitForAnimationToEnd
+# Runs
+- tapOn: "Runs"
+- waitForAnimationToEnd:
+    timeout: 4000
+- scroll
+- tapOn:
+    text: "See the route"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 4000
+- scroll
+- swipe:
+    start: 1%, 50%
+    end: 85%, 50%
+    duration: 400
+- waitForAnimationToEnd
+# Shop: a product and the website checkout in the in-app browser (nothing bought)
+- tapOn: "Shop"
+- waitForAnimationToEnd:
+    timeout: 4000
+- tapOn:
+    text: ".*\$[0-9].*"
+    index: 0
+- extendedWaitUntil:
+    visible: "Buy on the Run Island site"
+    timeout: 20000
+- tapOn: "Buy on the Run Island site"
+- waitForAnimationToEnd:
+    timeout: 8000
+- tapOn:
+    text: "(Done|Close)"
+    optional: true
+- waitForAnimationToEnd
+- swipe:
+    start: 1%, 50%
+    end: 85%, 50%
+    duration: 400
+- waitForAnimationToEnd
+# Club and legal
+- tapOn: "Club"
+- waitForAnimationToEnd:
+    timeout: 4000
+- scrollUntilVisible:
+    element: "Run Group Agreement"
+    direction: DOWN
+- tapOn: "Run Group Agreement"
+- waitForAnimationToEnd:
+    timeout: 4000
+- scroll
+- swipe:
+    start: 1%, 50%
+    end: 85%, 50%
+    duration: 400
+- waitForAnimationToEnd
+- scrollUntilVisible:
+    element: "Privacy policy"
+    direction: DOWN
+- tapOn: "Privacy policy"
+- waitForAnimationToEnd:
+    timeout: 6000
+- tapOn:
+    text: "(Done|Close)"
+    optional: true
+- tapOn: "Home"
+- waitForAnimationToEnd:
+    timeout: 4000
