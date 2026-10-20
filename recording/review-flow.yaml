@@ -88,7 +88,7 @@ appId: com.runisland.app
 - waitForAnimationToEnd:
     timeout: 4000
 - tapOn:
-    text: ".*\$[0-9].*"
+    text: '.*\$[0-9].*'
     index: 0
 - extendedWaitUntil:
     visible: "Buy on the Run Island site"
