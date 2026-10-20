@@ -126,9 +126,9 @@ appId: com.runisland.app
 - waitForAnimationToEnd:
     timeout: 4000
 - scrollUntilVisible:
-    element: "Run Group Agreement"
+    element: "Run Group Agreement.*"
     direction: DOWN
-- tapOn: "Run Group Agreement"
+- tapOn: "Run Group Agreement.*"
 - waitForAnimationToEnd:
     timeout: 4000
 - scroll
@@ -142,9 +142,9 @@ appId: com.runisland.app
     optional: true
 - waitForAnimationToEnd
 - scrollUntilVisible:
-    element: "Privacy policy"
+    element: "Privacy policy.*"
     direction: DOWN
-- tapOn: "Privacy policy"
+- tapOn: "Privacy policy.*"
 - waitForAnimationToEnd:
     timeout: 6000
 - tapOn:
