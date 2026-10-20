@@ -133,13 +133,9 @@ appId: com.runisland.app
     timeout: 4000
 - scroll
 - swipe:
-    start: 1%, 50%
-    end: 85%, 50%
-    duration: 400
-- waitForAnimationToEnd
-- tapOn:
-    text: "Back"
-    optional: true
+    start: 50%, 11%
+    end: 50%, 95%
+    duration: 500
 - waitForAnimationToEnd
 - scrollUntilVisible:
     element: "Privacy policy.*"
