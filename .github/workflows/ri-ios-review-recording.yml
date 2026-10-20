@@ -36,6 +36,8 @@ jobs:
           curl -fsSL "https://get.maestro.mobile.dev" | bash
           echo "$HOME/.maestro/bin" >> $GITHUB_PATH
       - name: Record the walkthrough
+        env:
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: "180000"
         run: |
           xcrun simctl io "$UDID" recordVideo --codec=h264 --force review-recording.mp4 &
           REC=$!
