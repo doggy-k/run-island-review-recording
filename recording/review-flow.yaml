@@ -102,8 +102,7 @@ appId: com.runisland.app
 - waitForAnimationToEnd:
     timeout: 8000
 - tapOn:
-    text: "(Done|Close)"
-    optional: true
+    point: "9%,9%"
 - waitForAnimationToEnd
 - swipe:
     start: 1%, 50%
@@ -133,8 +132,7 @@ appId: com.runisland.app
 - waitForAnimationToEnd:
     timeout: 6000
 - tapOn:
-    text: "(Done|Close)"
-    optional: true
+    point: "9%,9%"
 - tapOn: "Home"
 - waitForAnimationToEnd:
     timeout: 4000
